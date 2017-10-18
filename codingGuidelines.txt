@@ -1,0 +1,93 @@
+
+
+General Naming Convention:
+
+* Camel Case
+ 	ex: myVariable
+
+* Use tabs for each level of indentation
+
+* Comments should be of the form // Comment
+ 	ex: ( Bad ) //this is annoying
+	ex: ( Good ) // This is a comment
+
+* Abbreviate long variables, but make them readable
+	ex: ( Good ) myLongVariableName -> myLongVar
+	ex: ( Bad ) myLongVariableName -> lv
+
+* If a loop index is used for more than a trivial operation, give it a non trivial name
+	ex: ( OK, not great )
+	for(int i = 0; i < 10; i++)
+	{
+		printf("Index is: %d\n", i);
+	}
+
+	ex: ( Better )
+	for (int index = 0; index < 10; index++)
+	{
+		printf("Index is: %d\n", index);
+	}
+
+
+Functions:
+
+* Camel Case
+	ex: myFunction
+
+* Doxygen style headers: function name, description and parameters
+	ex:
+	/*
+	 * addFloat
+	 *
+	 * Returns the sum of two floating point numbers
+	 *
+	 * @param arguementOne
+	 * @param arguementTwo
+	 */
+	float addFloat(float arguementOne, float arguementTwo)
+
+* For clarity don't place brackets on the same line as the function header. Both ways are legal, however the following is more readable
+	ex: ( Do this)
+	float addFloat
+	{
+		...
+	}
+
+	ex: ( Don't do this! )
+	float addFloat {
+		...
+	}
+
+
+Classes:
+
+* Parent class members variables should be prefixed with "_" if they are used in a child class
+ 	ex: _myParentClassVariable
+
+* Put class method bodies in a separate file to make the header file more readable
+	ex: ( Bad )
+	<myClass.h>
+	class myClass
+	{
+		void myMethod()
+		{
+			printf("Hello World!\n");
+		}
+	}
+
+	ex: ( Good )
+	<myClass.h>
+	class myClass
+	{
+		void myMethod();
+	}
+
+	<myClass.cpp>
+	void myClass::myMethod()
+	{
+		printf("Hello World!\n");
+	}
+
+
+
+
