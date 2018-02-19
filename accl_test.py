@@ -10,16 +10,13 @@ import sys
 def sigint_handler(signum, frame):
     print("Shutting down...")
     GPIO.cleanup()
-    sys.exit(0)
     spi.close()
-    spi.exit(0)
+    sys.exit(0)
 signal.signal(signal.SIGINT, sigint_handler)
 
 
 # Set up GPIO Pins
-GPIO.setmode(GPIO.BOARD) # BOARD
-#GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-#PIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setmode(GPIO.BOARD)
 
 # Setup ADC
 spi = spidev.SpiDev()
@@ -39,12 +36,25 @@ def getInput(channel):
     
     return adcIn
 
+# Map acceleration to angle
+def map(value, low1, high1, low2, high2):
+
+    return low2 + (value-low1)*(high2-low2)/(high1-low1)
+
 def main():
     while True:
-        x_value = float(getInput(0))
-        y_value = float(getInput(1))
-        print("X: {}".format(x_value))
-        print("Y: {}".format(y_value))
+        a1_x = float(getInput(0))
+        a1_y = float(getInput(1))
+        a2_x = float(getInput(6))
+        a2_y = float(getInput(7))
+
+        x_avg = np.mean([a1_x, a2_x])
+        y_avg = np.mean([a1_y, a2_y])
+        angle = np.arctan(x_avg / y_avg)
+
+        angle = map(angle, .53, 1.03, -90, 90)
+
+        print("Angle: {}".format(angle))
 
 if __name__ == '__main__':
     main()
